@@ -1,27 +1,27 @@
-APP=eredis
 
-.PHONY: all compile clean Emakefile
+TARGET=eredis
+VSN=1.0.6
+ERL_ROOT=/usr/local/lib/erlang
+ERL_LIB=$(ERL_ROOT)/lib
 
-all: compile
 
-compile: ebin/$(APP).app Emakefile
-	erl -noinput -eval 'up_to_date = make:all()' -s erlang halt
+all: $(TARGET) boot
+
+$(TARGET):
+	erl -make
+
+boot:
+	erl -noinput -eval 'systools:make_script("$(TARGET)")' -s erlang halt
 
 clean:
-	rm --force -- ebin/*.beam Emakefile ebin/$(APP).app
+	rm -rf *.beam *.script *.boot *~
 
-ebin/$(APP).app: src/$(APP).app.src
-	mkdir --parents ebin
-	cp --force -- $< $@
-
-ifdef DEBUG
-EXTRA_OPTS:=debug_info,
-endif
-
-ifdef TEST
-EXTRA_OPTS:=$(EXTRA_OPTS) {d,'TEST', true},
-endif
-
-Emakefile: Emakefile.src
-	sed "s/{{EXTRA_OPTS}}/$(EXTRA_OPTS)/" $< > $@
-
+install:
+	install -d $(ERL_LIB)/$(TARGET)-$(VSN)/
+	install -d $(ERL_LIB)/$(TARGET)-$(VSN)/ebin/
+	install -d $(ERL_LIB)/$(TARGET)-$(VSN)/src/
+	install -d $(ERL_LIB)/$(TARGET)-$(VSN)/include/
+	install -m 644 *.beam $(ERL_LIB)/$(TARGET)-$(VSN)/ebin/
+	install -m 644 $(TARGET).app $(ERL_LIB)/$(TARGET)-$(VSN)/ebin/
+	install -m 644 $(TARGET).hrl $(ERL_LIB)/$(TARGET)-$(VSN)/include/
+	install -m 644 *.erl $(ERL_LIB)/$(TARGET)-$(VSN)/src/
