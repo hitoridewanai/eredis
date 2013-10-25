@@ -1,3 +1,36 @@
+%% @doc: Make the calling process the controlling process. The
+%% controlling process received pubsub-related messages, of which
+%% there are three kinds. In each message, the pid refers to the
+%% eredis client process.
+%%
+%%   {message, Channel::binary(), Message::binary(), pid()}
+%%     This is sent for each pubsub message received by the client.
+%%
+%%   {dropped, NumMessages::integer(), pid()}
+%%     If the queue reaches the max size as specified in start_link
+%%     and the behaviour is to drop messages, this message is sent when
+%%     the queue is flushed.
+%%
+%%   {subscribed, Channel::binary(), pid()}
+%%     When using eredis_sub:subscribe(pid()), this message will be
+%%     sent for each channel Redis aknowledges the subscription. The
+%%     opposite, 'unsubscribed' is sent when Redis aknowledges removal
+%%     of a subscription.
+%%
+%%   {eredis_disconnected, pid()}
+%%     This is sent when the eredis client is disconnected from redis.
+%%
+%%   {eredis_connected, pid()}
+%%     This is sent when the eredis client reconnects to redis after
+%%     an existing connection was disconnected.
+%%
+%% Any message of the form {message, _, _, _} must be acknowledged
+%% before any subsequent message of the same form is sent. This
+%% prevents the controlling process from being overrun with redis
+%% pubsub messages. See ack_message/1.
+
+
+
 %% Public types
 
 -type reconnect_sleep() :: no_reconnect | integer().
