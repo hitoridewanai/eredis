@@ -1,5 +1,5 @@
-{release, {"eredis", "1.1.0"}, {erts, "5.10.2"},
- [{kernel, "2.16.2"},
-  {stdlib, "1.19.2"},
-  {sasl, "2.3.2"},
-  {eredis, "1.1.0"}]}.
+{release, {"eredis", "1.1.2"}, {erts, "5.10.4"},
+ [{kernel, "2.16.4"},
+  {stdlib, "1.19.4"},
+  {sasl, "2.3.4"},
+  {eredis, "1.1.2"}]}.
