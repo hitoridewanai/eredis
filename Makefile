@@ -1,6 +1,6 @@
 
 TARGET=eredis
-VSN=1.1.1
+VSN=1.2.3
 ERL_ROOT=/usr/local/lib/erlang
 ERL_LIB=$(ERL_ROOT)/lib
 
